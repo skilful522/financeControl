@@ -25,7 +25,7 @@ export const registry = (formValues) => (dispatch) =>
       ),
     );
 
-export const login = (formValues) => (dispatch) =>
+export const login = (formValues, history) => (dispatch) =>
   loginApi(formValues)
     .then((user) => {
       dispatch(setUserAction(user));
@@ -35,6 +35,7 @@ export const login = (formValues) => (dispatch) =>
           type: 'success',
         }),
       );
+      history.push('/');
     })
     .catch(({ response: { data: { message } } }) =>
       dispatch(
