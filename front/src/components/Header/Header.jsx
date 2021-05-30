@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
-        <Grid>MyFinanceControl</Grid>
+        <Grid>MyMealsControl</Grid>
         <Grid container spacing={4} justify="flex-end">
           <Grid item>
             {user.name} {user.surname}
