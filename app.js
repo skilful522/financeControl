@@ -22,7 +22,7 @@ app.get("*", (req, res) => {
 
 async function start() {
   try {
-    await mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
+    await mongoose.connect("mongodb+srv://Stanislav:boneslilpeep@cluster0.ea09v.mongodb.net/app?retryWrites=true&w=majority", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
