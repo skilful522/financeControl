@@ -14,11 +14,6 @@ const Notification = () => {
 
   const handleClose = useCallback(() => dispatch(hideNotification()), []);
 
-  // const handleAutoClose = useCallback(
-  //   () => setTimeout(() => dispatch(hideNotification()), 3000),
-  //   [],
-  // );
-
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
