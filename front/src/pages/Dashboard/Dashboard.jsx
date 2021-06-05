@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 
-import { omit, pick } from 'ramda';
+import { find , pick, propEq } from "ramda";
 
 import {
   createPrivateProductApi,
@@ -58,13 +58,14 @@ const Dashboard = () => {
   const [isValidData, setIsValidData] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [modalMode, setModalMode] = useState(MODAL_MODS.create);
+  const isCreateMode = useMemo(() => modalMode === MODAL_MODS.create, [modalMode]);
 
   const initialValues = useMemo(
     () =>
-      !product
+      isCreateMode
         ? { name: '', calories: '', protein: '', fat: '', carbs: '' }
         : pick(['name', 'calories', 'protein', 'fat', 'carbs'], product),
-    [product],
+    [isCreateMode, product],
   );
 
   const title = useMemo(
@@ -112,17 +113,23 @@ const Dashboard = () => {
     [privateProducts],
   );
 
-  const handleSubmit = (formValues) => {
-    editPrivateProductApi(product);
-    // createPrivateProductApi(formValues)
-    //   .then(() => {
-    //     dispatch(
-    //       showNotification({ text: `${formValues.name} добавлен в таблицу` }),
-    //     );
-    //     setIsValidData(false);
-    //   })
-    //   .finally(() => handleClose());
-  };
+  const handleSubmit = useCallback((formValues) => {
+    const api = isCreateMode ? createPrivateProductApi : editPrivateProductApi;
+    const text = isCreateMode ? `${initialValues.name} добавлен в таблицу` : `${initialValues.name} изменён`;
+
+    const { _id } = !isCreateMode && initialValues && find(propEq('name', initialValues.name))(privateProducts);
+
+    const params = isCreateMode ? formValues : { ...formValues, _id };
+
+    api(params)
+      .then(() => {
+        dispatch(
+          showNotification({ text }),
+        );
+        setIsValidData(false);
+      })
+      .finally(() => handleClose());
+  }, [initialValues, dispatch, isCreateMode, privateProducts]);
 
   const handleClose = useCallback(() => setIsDisplayDialog(false), []);
 
@@ -138,7 +145,7 @@ const Dashboard = () => {
           setIsLoaded(true);
         });
     }
-  }, [isValidData]);
+  }, [dispatch, isValidData]);
 
   return (
     isLoaded && (

@@ -42,7 +42,7 @@ router.put("/edit", auth, async (req, res) => {
       { $set: editedProduct }
     );
 
-    res.status(201);
+    res.status(201).json();
   } catch (e) {
     res.status(500).json({ message: "что-то пошло не так, попробуйте снова" });
   }

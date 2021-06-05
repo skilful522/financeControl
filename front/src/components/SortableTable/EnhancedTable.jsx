@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { memo, useCallback, useEffect } from "react";
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -22,6 +22,10 @@ const EnhancedTable = ({ headCells, data, onAdd, onDelete, onEdit }) => {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  useEffect(() => {
+    setSelected([]);
+  }, [data]);
 
   const handleDelete = useCallback(
     (selected) => () => {
@@ -168,4 +172,4 @@ const EnhancedTable = ({ headCells, data, onAdd, onDelete, onEdit }) => {
   );
 };
 
-export default EnhancedTable;
+export default memo(EnhancedTable);
