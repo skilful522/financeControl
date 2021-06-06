@@ -18,10 +18,12 @@ import EnhancedTable from '../../components/SortableTable';
 
 import { showNotification } from '../../actions/notification';
 
+import useCommonStyles from "../../styles/useCommonStyles";
+
 import { useDashboardStyles } from './useDashboardStyles';
 import { privateProductSchema } from './validationSchema';
 
-const headCells = [
+export const headCells = [
   {
     id: 'name',
     numeric: false,
@@ -54,6 +56,7 @@ const Dashboard = () => {
   const [isDisplayDialog, setIsDisplayDialog] = useState(false);
   const [product, setProduct] = useState();
   const classes = useDashboardStyles();
+  const commonStyles = useCommonStyles();
   const [privateProducts, setPrivateProducts] = useState([]);
   const [isValidData, setIsValidData] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -149,7 +152,7 @@ const Dashboard = () => {
 
   return (
     isLoaded && (
-      <div className={classes.tableWrapper}>
+      <div className={commonStyles.tableWrapper}>
         <EnhancedTable
           data={privateProducts}
           onAdd={handleOpenModal}
