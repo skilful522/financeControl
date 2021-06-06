@@ -1,7 +1,6 @@
 const path = require("path");
 
 const express = require("express");
-const config = require("config");
 const mongoose = require("mongoose");
 
 require("dotenv").config();
@@ -12,6 +11,7 @@ app.use(express.json({ extended: true }));
 
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/privateProduct", require("./routes/privateProduct.routes"));
+app.use("/api/products", require("./routes/products.routes"));
 
 const PORT = process.env.PORT || 5000;
 

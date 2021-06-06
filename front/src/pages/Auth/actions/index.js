@@ -5,6 +5,7 @@ import {
 
 import { showNotification } from '../../../actions/notification';
 import { setUserAction } from '../../../slices/userSlice';
+import { NOTIFICATION_TYPES } from "../../../constants";
 
 export const registry = (formValues) => (dispatch) =>
   registryApi(formValues)
@@ -12,7 +13,7 @@ export const registry = (formValues) => (dispatch) =>
       dispatch(
         showNotification({
           text: message,
-          type: 'success',
+          type: NOTIFICATION_TYPES.success,
         }),
       ),
     )
@@ -20,7 +21,7 @@ export const registry = (formValues) => (dispatch) =>
       dispatch(
         showNotification({
           text: message,
-          type: 'error',
+          type: NOTIFICATION_TYPES.error,
         }),
       ),
     );
@@ -32,7 +33,7 @@ export const login = (formValues, history) => (dispatch) =>
       dispatch(
         showNotification({
           text: 'Вы успешно зашли в систему',
-          type: 'success',
+          type: NOTIFICATION_TYPES.success,
         }),
       );
       history.push('/');
@@ -41,7 +42,7 @@ export const login = (formValues, history) => (dispatch) =>
       dispatch(
         showNotification({
           text: message,
-          type: 'error',
+          type: NOTIFICATION_TYPES.error,
         }),
       ),
     );
