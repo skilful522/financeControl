@@ -10,22 +10,28 @@ import { NOTIFICATION_TYPES } from "../../constants";
 import useCommonStyles from "../../styles/useCommonStyles";
 import EnhancedTable from "../../components/SortableTable/EnhancedTable";
 import { headCells } from "../Dashboard/Dashboard";
+import { getUsersAmountApi } from "../../services/api/user";
 
 const GeneralProducts = () => {
   const [generalProducts, setGeneralProducts] = useState([]);
+  const [usersAmount, setUsersAmount] = useState(null);
   const dispatch = useDispatch();
   const commonStyles = useCommonStyles();
 
   useEffect(() => {
-    getProductsApi()
-      .then(fetchedProducts => setGeneralProducts(fetchedProducts))
+    Promise.all([getProductsApi(), getUsersAmountApi()])
+      .then(([fetchedProducts, amount]) => {
+        console.log(fetchedProducts, amount);
+        setGeneralProducts(fetchedProducts);
+        setUsersAmount(amount);
+      })
       .catch(error => dispatch(showNotification({ text: error, type: NOTIFICATION_TYPES.error })));
   },[dispatch]);
 
   return !isEmpty(generalProducts) && (
     <div className={commonStyles.tableWrapper}>
       <EnhancedTable
-        tableTitle="Продукты всех пользователей"
+        tableTitle={`Продукты всех пользователей. Пользователей: ${usersAmount}. Продуктов: ${generalProducts.length}`}
         data={generalProducts}
         headCells={headCells}
       />
