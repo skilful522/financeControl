@@ -1,4 +1,7 @@
 const path = require("path");
+const https = require("https");
+
+const APP_HEROKU_URL = 'https://mymealscontrol.herokuapp.com/';
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -27,7 +30,12 @@ async function start() {
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
-    app.listen(PORT, () => console.log("app has been started", PORT));
+    app.listen(PORT, () => {
+      console.log("app has been started", PORT);
+      setInterval(() => {
+        https.get(APP_HEROKU_URL, (value => console.log(value, 'hhhh')));
+      }, 1500000);
+    });
   } catch (e) {
     console.log("Server error", e.message);
     process.exit(1);
