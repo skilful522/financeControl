@@ -22,6 +22,7 @@ export const useAuthStyles = makeStyles((theme) => ({
   },
   formsWrapper: {
     paddingRight: 20,
+    paddingTop: 80,
     [theme.breakpoints.up('sm')]: {
       display: 'flex',
       alignItems: 'flex-end',
