@@ -19,7 +19,7 @@ const LoginForm = ({ history }) => {
     (formValues) => {
       dispatch(login(formValues, history));
     },
-    [dispatch],
+    [dispatch, history],
   );
 
   return (

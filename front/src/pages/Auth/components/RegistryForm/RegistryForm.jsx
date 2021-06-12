@@ -6,19 +6,24 @@ import Grid from '@material-ui/core/Grid';
 
 import { Button, Typography } from '@material-ui/core';
 
+import withRouter from "react-router-dom/es/withRouter";
+
 import { registryInitialValues } from '../../../../validation/Auth/initialValues';
 
 import { registrySchema } from '../../../../validation/Auth';
 
 import TextField from '../../../../components/TextField';
 
-import { registry } from '../../actions';
+import { login, registry } from "../../actions";
 
-const RegistryForm = () => {
+const RegistryForm = ({ history }) => {
   const dispatch = useDispatch();
   const handleSubmit = useCallback(
-    (formValues) => dispatch(registry(formValues)),
-    [dispatch],
+    (formValues) => dispatch(registry(formValues))
+      .then(() => {
+        dispatch(login(formValues, history));
+      }),
+    [dispatch, history],
   );
 
   return (
@@ -64,4 +69,4 @@ const RegistryForm = () => {
   );
 };
 
-export default RegistryForm;
+export default withRouter(RegistryForm);
