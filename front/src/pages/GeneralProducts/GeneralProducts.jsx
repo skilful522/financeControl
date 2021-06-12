@@ -25,6 +25,7 @@ const GeneralProducts = () => {
   return !isEmpty(generalProducts) && (
     <div className={commonStyles.tableWrapper}>
       <EnhancedTable
+        tableTitle="Продукты всех пользователей"
         data={generalProducts}
         headCells={headCells}
       />

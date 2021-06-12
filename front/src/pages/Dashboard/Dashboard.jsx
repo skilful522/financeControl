@@ -28,7 +28,7 @@ export const headCells = [
     id: 'name',
     numeric: false,
     disablePadding: true,
-    label: 'Название продукта (100g serving)',
+    label: 'Название продукта (100 г)',
   },
   { id: 'calories', numeric: true, disablePadding: false, label: 'Калории' },
   {
@@ -154,6 +154,7 @@ const Dashboard = () => {
     isLoaded && (
       <div className={commonStyles.tableWrapper}>
         <EnhancedTable
+          tableTitle="Личные продукты"
           data={privateProducts}
           onAdd={handleOpenModal}
           onEdit={handleOnEdit}
