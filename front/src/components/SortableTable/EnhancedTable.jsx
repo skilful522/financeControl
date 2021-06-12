@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from "react";
+import React, { memo, useCallback, useEffect, useMemo } from "react";
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,13 +15,15 @@ import { useStyles } from './useStyles';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import { getComparator, stableSort } from './helpers';
 
-const EnhancedTable = ({ headCells, data, onAdd, onDelete, onEdit }) => {
+const EnhancedTable = ({ tableTitle, headCells, data, onAdd, onDelete, onEdit }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const isEditableTable = useMemo(() => (onAdd && onDelete && onEdit), [onAdd, onDelete, onEdit]);
 
   useEffect(() => {
     setSelected([]);
@@ -91,6 +93,7 @@ const EnhancedTable = ({ headCells, data, onAdd, onDelete, onEdit }) => {
   return (
     <Paper className={classes.paper}>
       <EnhancedTableToolbar
+        tableTitle={tableTitle}
         onDelete={handleDelete}
         onAdd={onAdd}
         onEdit={onEdit}
@@ -109,6 +112,7 @@ const EnhancedTable = ({ headCells, data, onAdd, onDelete, onEdit }) => {
             numSelected={selected.length}
             order={order}
             orderBy={orderBy}
+            isEditableTable={isEditableTable}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
             rowCount={data.length}
@@ -131,10 +135,11 @@ const EnhancedTable = ({ headCells, data, onAdd, onDelete, onEdit }) => {
                     selected={isItemSelected}
                   >
                     <TableCell padding="checkbox">
+                      {isEditableTable &&
                       <Checkbox
                         checked={isItemSelected}
                         inputProps={{ 'aria-labelledby': labelId }}
-                      />
+                      />}
                     </TableCell>
                     <TableCell
                       component="th"

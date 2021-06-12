@@ -10,7 +10,7 @@ import React, { useMemo } from 'react';
 
 import { useToolbarStyles } from './useStyles';
 
-const EnhancedTableToolbar = ({ selected, onAdd, onDelete, onEdit }) => {
+const EnhancedTableToolbar = ({ tableTitle, selected, onAdd, onDelete, onEdit }) => {
   const classes = useToolbarStyles();
   const numSelected = useMemo(() => selected.length, [selected]);
 
@@ -36,11 +36,11 @@ const EnhancedTableToolbar = ({ selected, onAdd, onDelete, onEdit }) => {
           id="tableTitle"
           component="div"
         >
-          Продукты
+          {tableTitle}
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {(onEdit && onDelete && numSelected > 0) ? (
         <>
           {numSelected === 1 && (
             <Tooltip title="Редактировать">
@@ -55,7 +55,7 @@ const EnhancedTableToolbar = ({ selected, onAdd, onDelete, onEdit }) => {
             </IconButton>
           </Tooltip>
         </>
-      ) : (
+      ) : onAdd && (
         <Tooltip title="Добавить продукт">
           <IconButton aria-label="add product">
             <AddIcon onClick={onAdd} />
