@@ -35,13 +35,12 @@ const Product = ({ match: { params: { id } } }) => {
   useEffect(() => {
     if (photo) {
       const formData = new FormData();
-      const type = photo.type.split('/')[1];
       const text = product.photo ? `Изображение для ${product.name} добавлено`: 'Изображение обновлено';
 
       keys(product).forEach(key => {
         formData.append(key, product[key]);
       });
-      formData.append('photo', photo, `${photo.name}-${product.owner}.${type}`);
+      formData.append('photo', photo);
       editPrivateProductApi(formData, { "Content-Type": "multipart/form-data" })
         .then(() => dispatch(showNotification({ text, type: NOTIFICATION_TYPES.success })))
         .catch(() => dispatch(showNotification({ text: 'Ошибка во время загрузки изображения', type: NOTIFICATION_TYPES.error })))
