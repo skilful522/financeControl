@@ -9,6 +9,7 @@ const schema = new Schema({
   price: { type: Number, required: false },
   id: { type: String, required: true, unique: true },
   owner: { type: Types.ObjectId, ref: "User" },
+  photo: { type: String },
 });
 
 module.exports = model("PrivateProducts", schema);

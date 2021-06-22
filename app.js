@@ -32,9 +32,8 @@ async function start() {
       useCreateIndex: true,
     });
     app.listen(PORT, () => {
-      console.log("app has been started", PORT);
       setInterval(() => {
-        https.get(APP_HEROKU_URL, (value => console.log(value, 'hhhh')));
+        https.get(APP_HEROKU_URL);
       }, 1500000);
     });
   } catch (e) {

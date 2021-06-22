@@ -85,9 +85,7 @@ export const del = ({ url, params = {}, auth = true, body = {} }) => {
     .catch((error) => handleError(error));
 };
 
-export const put = ({ url, params = {}, auth = true, body = {} }) => {
-  const headers = {};
-
+export const put = ({ url, params = {}, auth = true, body = {}, headers = {} }) => {
   const user = authService.getUser();
   const token = user?.token;
 
