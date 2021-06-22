@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import Loader from './components/Loader';
 import { selectIsDisplayLoader } from './selectors/selectLoader';
 import GeneralProducts from "./pages/GeneralProducts";
+import Product from "./pages/Product";
 
 export const Routes = () => {
   const user = useSelector(selectUser);
@@ -27,6 +28,9 @@ export const Routes = () => {
           </Route>
           <Route exact path="/products">
             <GeneralProducts />
+          </Route>
+          <Route exact path="/product/:id">
+            <Product />
           </Route>
         </>
       ) : (

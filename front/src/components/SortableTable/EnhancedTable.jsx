@@ -10,6 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 
+import Link from "@material-ui/core/Link";
+
 import EnhancedTableHead from './EnhancedTableHead';
 import { useStyles } from './useStyles';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
@@ -147,12 +149,14 @@ const EnhancedTable = ({ tableTitle, headCells, data, onAdd, onDelete, onEdit })
                       scope="row"
                       padding="none"
                     >
-                      {row.name}
+                      <Link href={`product/${row._id}`}>
+                        {row.name}
+                      </Link>
                     </TableCell>
                     <TableCell align="right">{row.calories}</TableCell>
+                    <TableCell align="right">{row.protein}</TableCell>
                     <TableCell align="right">{row.fat}</TableCell>
                     <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
                   </TableRow>
                 );
               })}

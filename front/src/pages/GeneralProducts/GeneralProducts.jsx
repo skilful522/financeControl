@@ -21,7 +21,6 @@ const GeneralProducts = () => {
   useEffect(() => {
     Promise.all([getProductsApi(), getUsersAmountApi()])
       .then(([fetchedProducts, amount]) => {
-        console.log(fetchedProducts, amount);
         setGeneralProducts(fetchedProducts);
         setUsersAmount(amount);
       })

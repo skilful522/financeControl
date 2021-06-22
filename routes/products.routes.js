@@ -16,4 +16,14 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+router.get("/:id", auth, async (req, res) => {
+  try {
+    const product = await PrivateProduct.findById(req.params.id);
+
+    res.status(200).json(product);
+  } catch (e) {
+    res.status(500).json({ message: "что-то пошло не так, попробуйте снова" });
+  }
+});
+
 module.exports = router;
