@@ -7,8 +7,6 @@ import { Tooltip } from "@material-ui/core";
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { keys } from "ramda";
-
 import { useDispatch } from "react-redux";
 
 import { getProduct } from "../../services/api/products";
@@ -34,17 +32,16 @@ const Product = ({ match: { params: { id } } }) => {
 
   useEffect(() => {
     if (photo) {
-      const formData = new FormData();
       const text = product.photo ? `Изображение для ${product.name} добавлено`: 'Изображение обновлено';
+      const reader = new FileReader();
 
-      keys(product).forEach(key => {
-        formData.append(key, product[key]);
-      });
-      formData.append('photo', photo);
-      editPrivateProductApi(formData, { "Content-Type": "multipart/form-data" })
-        .then(() => dispatch(showNotification({ text, type: NOTIFICATION_TYPES.success })))
-        .catch(() => dispatch(showNotification({ text: 'Ошибка во время загрузки изображения', type: NOTIFICATION_TYPES.error })))
-        .finally(() => setIsValidData(false));
+      reader.readAsDataURL(photo);
+      reader.onloadend = () => {
+        editPrivateProductApi({ ...product, photo: reader.result })
+          .then(() => dispatch(showNotification({ text, type: NOTIFICATION_TYPES.success })))
+          .catch(() => dispatch(showNotification({ text: 'Ошибка во время загрузки изображения', type: NOTIFICATION_TYPES.error })))
+          .finally(() => setIsValidData(false));
+      };
     }
   }, [photo]);
 

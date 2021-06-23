@@ -1,33 +1,11 @@
 const { Router } = require("express");
 const shortId = require("shortid");
-const multer = require('multer');
 
 const auth = require("../middlewares/auth.middleware");
 
 const PrivateProduct = require("../models/PrivateProduct");
 
 const router = Router();
-
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './front/public/uploads/');
-  },
-  filename: function(req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-
-  if(allowedFileTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-const upload = multer({ storage, fileFilter });
 
 router.post("/create", auth, async (req, res) => {
   try {
@@ -54,9 +32,9 @@ router.post("/create", auth, async (req, res) => {
   }
 });
 
-router.put("/edit", auth, upload.single('photo'), async (req, res) => {
+router.put("/edit", auth, async (req, res) => {
   try {
-    const editedProduct = { ...req.body, photo: req.file.originalname };
+    const editedProduct = req.body;
 
     await PrivateProduct.updateOne(
       { _id: editedProduct._id },

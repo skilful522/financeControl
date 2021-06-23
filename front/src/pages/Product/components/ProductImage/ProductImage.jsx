@@ -7,7 +7,7 @@ const ProductImage = ({ image }) => {
 
   return (
     <div className={classes.wrapper}>
-      <img className={classes.image} src={`/uploads/${image}`} alt="Изображение продукта" />
+      <img className={classes.image} src={image} alt="Изображение продукта" />
     </div>
   );
 };
