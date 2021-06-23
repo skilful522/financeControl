@@ -1,6 +1,8 @@
 const path = require("path");
 const https = require("https");
 
+const bodyParser = require("body-parser");
+
 const APP_HEROKU_URL = 'https://mymealscontrol.herokuapp.com/';
 
 const express = require("express");
@@ -10,7 +12,8 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(express.json({ extended: true }));
+app.use(bodyParser.json({ extended: true, limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/privateProduct", require("./routes/privateProduct.routes"));
