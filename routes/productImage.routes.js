@@ -8,14 +8,14 @@ const router = Router();
 
 router.post("/add", auth, async (req, res) => {
   try {
-    const id = req.body.id;
+    const id = req.body.productId;
     const existing = await ProductImage.findOne({ id });
 
     if (existing) {
       return req.json({ text: 'Такое изображение уже есть' });
     }
 
-    const productImage = new ProductImage({ productId: id, data: req.body.photo });
+    const productImage = new ProductImage({ productId: id, data: req.body.data });
 
     await productImage.save();
 
