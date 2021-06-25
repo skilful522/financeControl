@@ -11,11 +11,11 @@ import { useDispatch } from "react-redux";
 
 import { getProduct } from "../../services/api/products";
 
-import { editPrivateProductApi } from "../../services/api/privateProduct";
-
 import { showNotification } from "../../actions/notification";
 
 import { NOTIFICATION_TYPES } from "../../constants";
+
+import { addProductImageApi, editProductImageApi, getProductImageApi } from "../../services/api/productImage";
 
 import useProductStyles from "./useProductStyles";
 import ProductGoods from "./components/ProductGoods";
@@ -24,40 +24,53 @@ import EmptyImage from "./components/EmptyImage";
 
 const Product = ({ match: { params: { id } } }) => {
   const [product, setProduct] = useState(null);
+  const [productImage, setProductImage] = useState(null);
   const [photo, setPhoto] = useState(null);
-  const [isValidData, setIsValidData] = useState(false);
+  const [isValidImage, setIsValidImage] = useState(false);
   const classes = useProductStyles();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (photo) {
-      const text = product.photo ? `Изображение для ${product.name} добавлено`: 'Изображение обновлено';
+      const text = !productImage ? `Изображение для ${product.name} добавлено`: 'Изображение обновлено';
       const reader = new FileReader();
 
       reader.readAsDataURL(photo);
       reader.onloadend = () => {
-        editPrivateProductApi({ ...product, photo: reader.result })
+        const body = { _id: productImage?._id, productId: product.id, data: reader.result };
+        const api = productImage ? editProductImageApi : addProductImageApi;
+
+        api(body)
           .then(() => dispatch(showNotification({ text, type: NOTIFICATION_TYPES.success })))
-          .catch(() => dispatch(showNotification({ text: 'Ошибка во время загрузки изображения', type: NOTIFICATION_TYPES.error })))
-          .finally(() => setIsValidData(false));
+          .catch(() => dispatch(showNotification({ text: 'Ошибка во время загрузки изображения на сервер', type: NOTIFICATION_TYPES.error })))
+          .finally(() => {
+            setPhoto(null);
+            setIsValidImage(false);
+          });
       };
     }
-  }, [photo]);
+  }, [productImage, photo]);
 
   const handlePhoto = event => {
     setPhoto(event.target.files[0]);
   };
 
   useEffect(() => {
-    if (!isValidData) {
-      getProduct(id)
-        .then(data => {
-          setProduct(data);
-          setIsValidData(true);
+    !product && getProduct(id)
+      .then(data => {
+        setProduct(data);
+      });
+
+    if (!isValidImage && !photo) {
+      product && getProductImageApi(product.id)
+        .then(image => image && setProductImage(image))
+        .catch(() => dispatch(showNotification({ text: 'Ошибка во время получения изображения', type: NOTIFICATION_TYPES.error })))
+        .finally(() => {
+          setIsValidImage(true);
         });
     }
-  }, [isValidData]);
+  }, [photo, product, isValidImage]);
 
   return (
     <Grid container justify="center" alignItems="center" spacing={16} className={classes.wrapper}>
@@ -66,9 +79,9 @@ const Product = ({ match: { params: { id } } }) => {
           <Grid container justify="center" item xs={12}>
             <h2>{product.name}</h2>
           </Grid>
-          {isValidData ? (
+          {isValidImage ? (
             <Grid item className={classes.imageWrapper}>
-              {product.photo ? <ProductImage image={product.photo} /> : <EmptyImage />}
+              {productImage ? <ProductImage image={productImage.data} /> : <EmptyImage />}
               <input
                 className={classes.hidden}
                 type="file"
