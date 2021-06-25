@@ -169,6 +169,7 @@ const EnhancedTable = ({ tableTitle, headCells, data, onAdd, onDelete, onEdit })
         </Table>
       </TableContainer>
       <TablePagination
+        labelRowsPerPage="Строк на странице"
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={data.length}
