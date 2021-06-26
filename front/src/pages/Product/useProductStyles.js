@@ -3,6 +3,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 const useProductStyles = makeStyles(() => ({
   wrapper: {
     height: '100%',
+    padding: '0px 20px',
   },
   hidden: {
     display: 'none',
