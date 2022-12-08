@@ -10,4 +10,5 @@ updates:
     schedule:
       interval: "weekly"
     allow:
-      - dependency-name: "mongoose" 
+      - dependency-name: "mongoose"
+    target-branch: "develop" 
